@@ -16,13 +16,24 @@ class _chatState extends State<chatWindow> {
     return MaterialApp(
       home: Scaffold(
         body: Container(
-          alignment: Alignment.bottomLeft,
-          padding: EdgeInsets.only(bottom: 50, left: 50, right: 50),
-          child: TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Hãy tâm sự gì đó',
-            ),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/images/Trangch.png'),
+                fit: BoxFit.cover),
+          ),
+          child: Column(
+            children: [
+              Container(
+                alignment: Alignment.bottomLeft,
+                padding: EdgeInsets.only(bottom: 50, left: 50, right: 50),
+                child: TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Hãy tâm sự gì đó',
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
