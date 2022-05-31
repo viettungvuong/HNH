@@ -21,15 +21,28 @@ class _chatState extends State<chatWindow> {
                 image: AssetImage('assets/images/Trangch.png'),
                 fit: BoxFit.cover),
           ),
-          child: Column(
+          child: Row(
             children: [
               Container(
+                padding: EdgeInsets.only(left: 30, bottom: 40, right: 0),
+                width: 300,
                 alignment: Alignment.bottomLeft,
-                padding: EdgeInsets.only(bottom: 50, left: 50, right: 50),
                 child: TextField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Hãy tâm sự gì đó',
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 20, bottom: 50),
+                alignment: Alignment.bottomRight,
+                child: Transform.scale(
+                  scale: 1.5,
+                  //bat buoc phai quang vao sizedbox vi iconbutton can parent
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: Image.asset('assets/images/send.png'),
                   ),
                 ),
               ),
