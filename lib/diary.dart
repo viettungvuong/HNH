@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 
 class diaryWindow extends StatefulWidget {
   @override
@@ -11,12 +12,17 @@ class diaryWindow extends StatefulWidget {
 }
 
 class _diaryState extends State<diaryWindow> {
-  String? tamSu;
+  String tamSu = "";
+
   void write(String input) {
     //ham viet tam su
     setState(() {
       tamSu = input;
     });
+  }
+
+  String getCurrentDate() {
+    return DateFormat('dd-MM-yyyy').format(DateTime.now());
   }
 
   final TextEditingController _controller = new TextEditingController();
@@ -32,8 +38,15 @@ class _diaryState extends State<diaryWindow> {
           ),
           child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
             Container(
+              alignment: Alignment.topCenter,
+              child: Text(
+                getCurrentDate(),
+                style: TextStyle(fontSize: 30),
+              ),
+            ),
+            Container(
               alignment: Alignment.topLeft,
-              padding: EdgeInsets.only(top: 90, left: 40, bottom: 250),
+              padding: EdgeInsets.only(top: 90, left: 40, bottom: 400),
               child: Text(
                 "$tamSu",
                 style: TextStyle(fontSize: 20),
