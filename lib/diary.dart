@@ -36,32 +36,38 @@ class _diaryState extends State<diaryWindow> {
                 image: AssetImage('assets/images/Trangch.png'),
                 fit: BoxFit.cover),
           ),
-          child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Container(
               alignment: Alignment.topCenter,
+              padding: EdgeInsets.only(top: 150),
               child: Text(
                 getCurrentDate(),
                 style: TextStyle(fontSize: 30),
               ),
             ),
             Container(
-              alignment: Alignment.topLeft,
-              padding: EdgeInsets.only(top: 90, left: 40, bottom: 400),
-              child: Text(
-                "$tamSu",
-                style: TextStyle(fontSize: 20),
+              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 40),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Text(
+                  tamSu,
+                  style: TextStyle(fontSize: 20),
+                ),
               ),
             ),
-            Container(
-              alignment: Alignment.bottomLeft,
-              padding: EdgeInsets.only(top: 100, bottom: 40),
+            Expanded(
               child: Row(
                 children: [
                   Container(
                     padding: EdgeInsets.only(left: 30, bottom: 40, right: 0),
-                    width: 300,
+                    width: 350,
                     alignment: Alignment.bottomLeft,
                     child: TextField(
+                      onSubmitted: (value) {
+                        write(_controller.text);
+                      },
+                      keyboardType: TextInputType.multiline,
+                      maxLines: 3,
                       controller: _controller,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
