@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:hnh/chat.dart';
+import 'package:hnh/diary.dart';
 
 void main(List<String> args) {
   runApp(
@@ -158,7 +159,13 @@ class mainWidget extends StatelessWidget {
                     width: 100,
                     height: 100.0,
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => diaryWindow()),
+                        );
+                      },
                       icon: Image.asset('assets/images/Icon_row301.png'),
                       iconSize: 60,
                     ),
