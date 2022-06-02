@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hnh/main.dart';
 import 'package:intl/intl.dart';
 
 class diaryWindow extends StatefulWidget {
@@ -38,8 +39,23 @@ class _diaryState extends State<diaryWindow> {
           ),
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Container(
+              alignment: Alignment.topLeft,
+              padding: EdgeInsets.only(top: 60, left: 30),
+              child: Transform.scale(
+                scale: 1.5,
+                child: IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => mainWidget()),
+                      );
+                    },
+                    icon: Image.asset('assets/images/Logo11.png')),
+              ),
+            ),
+            Container(
               alignment: Alignment.topCenter,
-              padding: EdgeInsets.only(top: 150),
+              padding: EdgeInsets.only(top: 20),
               child: Text(
                 getCurrentDate(),
                 style: TextStyle(fontSize: 30),

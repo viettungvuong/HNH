@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import 'main.dart';
+
 class chatWindow extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -21,30 +23,49 @@ class _chatState extends State<chatWindow> {
                 image: AssetImage('assets/images/Trangch.png'),
                 fit: BoxFit.cover),
           ),
-          child: Row(
+          child: Column(
             children: [
               Container(
-                padding: EdgeInsets.only(left: 30, bottom: 40, right: 0),
-                width: 300,
-                alignment: Alignment.bottomLeft,
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Hãy tâm sự gì đó',
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.only(left: 20, bottom: 50),
-                alignment: Alignment.bottomRight,
+                alignment: Alignment.topLeft,
+                padding: EdgeInsets.only(top: 60, left: 30, bottom: 700),
                 child: Transform.scale(
                   scale: 1.5,
-                  //bat buoc phai quang vao sizedbox vi iconbutton can parent
                   child: IconButton(
-                    onPressed: () {},
-                    icon: Image.asset('assets/images/send.png'),
-                  ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => mainWidget()),
+                        );
+                      },
+                      icon: Image.asset('assets/images/Logo11.png')),
                 ),
+              ),
+              Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 30, bottom: 40, right: 0),
+                    width: 300,
+                    alignment: Alignment.bottomLeft,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Hãy tâm sự gì đó',
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 20, bottom: 50),
+                    alignment: Alignment.bottomRight,
+                    child: Transform.scale(
+                      scale: 1.5,
+                      //bat buoc phai quang vao sizedbox vi iconbutton can parent
+                      child: IconButton(
+                        onPressed: () {},
+                        icon: Image.asset('assets/images/send.png'),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
