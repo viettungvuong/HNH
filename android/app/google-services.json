@@ -1,41 +1,34 @@
 {
   "project_info": {
-    "project_number": "52597277371",
-    "project_id": "heal-c011f",
-    "storage_bucket": "heal-c011f.appspot.com"
+    "project_number": "678424055999",
+    "project_id": "hnhp-2ee2f",
+    "storage_bucket": "hnhp-2ee2f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:52597277371:android:db099241bc30265f01df9e",
+        "mobilesdk_app_id": "1:678424055999:android:d81a564506e81968c6360a",
         "android_client_info": {
-          "package_name": "com.example.hnh"
+          "package_name": "com.tung.hnh"
         }
       },
       "oauth_client": [
         {
-          "client_id": "52597277371-hbj5iho53dcslvvq2aupjlbuevhg22b9.apps.googleusercontent.com",
+          "client_id": "678424055999-rrpnfmt5r00epfd4p5bi80j2gp29s0ms.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCfDgdqWJfCTxjefGOBbaj8CsxfhqKHouE"
+          "current_key": "AIzaSyAn0lCS03xUQ2bQR9DGJNXyPNR-9mlZxdM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "52597277371-hbj5iho53dcslvvq2aupjlbuevhg22b9.apps.googleusercontent.com",
+              "client_id": "678424055999-rrpnfmt5r00epfd4p5bi80j2gp29s0ms.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "52597277371-e8c1d5mim01oq71nip4o2jjv15o39io8.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.hnh"
-              }
             }
           ]
         }

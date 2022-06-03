@@ -79,6 +79,8 @@ class _diaryState extends State<diaryWindow> {
                     width: 350,
                     alignment: Alignment.bottomLeft,
                     child: TextField(
+                      enableSuggestions: false,
+                      autocorrect: false,
                       onSubmitted: (value) {
                         write(_controller.text);
                       },

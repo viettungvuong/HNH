@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'main.dart';
 
@@ -13,6 +14,7 @@ class chatWindow extends StatefulWidget {
 }
 
 class _chatState extends State<chatWindow> {
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -47,6 +49,8 @@ class _chatState extends State<chatWindow> {
                     width: 300,
                     alignment: Alignment.bottomLeft,
                     child: TextField(
+                      enableSuggestions: false,
+                      autocorrect: false,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Hãy tâm sự gì đó',
