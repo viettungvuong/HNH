@@ -3,8 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:hnh/chat.dart';
 import 'package:hnh/diary.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main(List<String> args) {
+void main(List<String> args) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
     MaterialApp(
       home: mainWidget(),
