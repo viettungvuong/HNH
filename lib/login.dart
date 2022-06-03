@@ -1,6 +1,35 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+User fromMapUser(Map<dynamic, dynamic> document) {
+  late User usr;
+  usr = new User(document['username'], document['password']);
+  return usr;
+}
+
+class User {
+  String? username;
+  String? password;
+  User(this.username, this.password);
+  dynamic getName() => username;
+}
+
+class UserList {
+  late List<User> users;
+  Future<void> getUsers() async {
+    var collection = FirebaseFirestore.instance.collection('users');
+    collection.get().then((value) => {
+          value.docs.forEach((element) {
+            setState() {
+              users.add(fromMapUser(element.data()));
+            }
+          })
+        });
+  }
+}
 
 class loginWindow extends StatefulWidget {
   @override
@@ -10,6 +39,8 @@ class loginWindow extends StatefulWidget {
 }
 
 class _loginState extends State<loginWindow> {
+  void login() {}
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
