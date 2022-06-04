@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hnh/main.dart';
 import 'package:intl/intl.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class diaryWindow extends StatefulWidget {
   @override
@@ -13,7 +14,9 @@ class diaryWindow extends StatefulWidget {
 }
 
 class _diaryState extends State<diaryWindow> {
+  bool showCalendar = false;
   String tamSu = "";
+  TableCalendar? calendar;
 
   void write(String input) {
     //ham viet tam su
@@ -22,11 +25,13 @@ class _diaryState extends State<diaryWindow> {
     });
   }
 
+  void openDate(DateTime date) {}
+
   String getCurrentDate() {
     return DateFormat('dd-MM-yyyy').format(DateTime.now());
   }
 
-  final TextEditingController _controller = new TextEditingController();
+  final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -38,20 +43,39 @@ class _diaryState extends State<diaryWindow> {
                 fit: BoxFit.cover),
           ),
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Container(
-              alignment: Alignment.topLeft,
-              padding: EdgeInsets.only(top: 60, left: 30),
-              child: Transform.scale(
-                scale: 1.5,
-                child: IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => mainWidget()),
-                      );
-                    },
-                    icon: Image.asset('assets/images/Logo11.png')),
-              ),
+            Row(
+              children: [
+                Container(
+                  alignment: Alignment.topLeft,
+                  padding: EdgeInsets.only(top: 60, left: 30, right: 260),
+                  child: Transform.scale(
+                    scale: 1.5,
+                    child: IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => mainWidget()),
+                          );
+                        },
+                        icon: Image.asset('assets/images/Logo11.png')),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.topRight,
+                  padding: EdgeInsets.only(top: 60, right: 30),
+                  child: Transform.scale(
+                    scale: 1.5,
+                    child: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            showCalendar = ((showCalendar) ? false : true);
+                          });
+                        },
+                        icon: Image.asset('assets/images/Calendar.png')),
+                  ),
+                ),
+              ],
             ),
             Container(
               alignment: Alignment.topCenter,
@@ -59,6 +83,17 @@ class _diaryState extends State<diaryWindow> {
               child: Text(
                 getCurrentDate(),
                 style: TextStyle(fontSize: 30),
+              ),
+            ),
+            Visibility(
+              visible: (showCalendar),
+              child: Container(
+                alignment: Alignment.topCenter,
+                child: TableCalendar(
+                  firstDay: DateTime.utc(2010, 10, 16),
+                  lastDay: DateTime.utc(2040, 3, 14),
+                  focusedDay: DateTime.now(),
+                ),
               ),
             ),
             Container(

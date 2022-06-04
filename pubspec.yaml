@@ -41,6 +41,7 @@ dependencies:
   cloud_firestore: ^3.1.17
   firebase_storage: ^10.2.17
   shared_preferences: ^2.0.15
+  table_calendar: ^3.0.6
 
 dev_dependencies:
   flutter_test:
