@@ -31,6 +31,7 @@ class _diaryState extends State<diaryWindow> {
     return DateFormat('dd-MM-yyyy').format(DateTime.now());
   }
 
+  DateTime focused = DateTime.now();
   final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -92,7 +93,16 @@ class _diaryState extends State<diaryWindow> {
                 child: TableCalendar(
                   firstDay: DateTime.utc(2010, 10, 16),
                   lastDay: DateTime.utc(2040, 3, 14),
-                  focusedDay: DateTime.now(),
+                  focusedDay: focused,
+                  onPageChanged: (focusedDay) {
+                    focused = focusedDay;
+                  },
+                  onDaySelected: (selectedDay, focusedDay) {
+                    setState(() {
+                      focused = focusedDay;
+                      openDate(focused); //mo coi diary cua ngay do
+                    });
+                  },
                 ),
               ),
             ),
