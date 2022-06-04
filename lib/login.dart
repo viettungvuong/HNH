@@ -3,6 +3,8 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hnh/diary.dart';
+import 'package:intl/intl.dart';
 
 import 'main.dart';
 
@@ -46,7 +48,17 @@ class _loginState extends State<loginWindow> {
   final TextEditingController _controller1 = TextEditingController();
   final TextEditingController _controller2 = TextEditingController();
 
-  void register(String username) {}
+  void register(String username) {
+    FirebaseFirestore.instance.collection("$_controller1.text").add({
+      "content": "",
+      "date": DateFormat('dd-MM-yyyy')
+          .format(DateTime.now()), //tao collection rieng cho user
+    }).then((_) {
+      print("collection created");
+    }).catchError((_) {
+      print("an error occured");
+    });
+  }
 
   void login() {
     if (UserList.users[_controller1.text] == null) {

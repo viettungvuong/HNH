@@ -7,6 +7,25 @@ import 'package:hnh/main.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+class Diary {
+  late String username;
+  late DateTime date;
+  late String content;
+  Diary(String str1, String str2, String str3) {
+    username = str1;
+    content = str2;
+    date = DateFormat('dd-MM-yyyy').parse(str2);
+  }
+}
+
+Diary fromMapDiary(Map<dynamic, dynamic> document) {
+  late Diary diary;
+  if (document.isNotEmpty) {
+    diary = Diary(document['username'], document['date'], document['content']);
+  }
+  return diary;
+}
+
 class diaryWindow extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -19,27 +38,29 @@ class _diaryState extends State<diaryWindow> {
   String tamSu = "";
   TableCalendar? calendar;
 
+  List<Diary> findDiary(String username) {
+    //ham tim tat ca nhat ki lien quan toi user
+    List<Diary> ans = [];
+    //foreach doc in collection (co the doi thanh hash table) voi ten la username
+    FirebaseFirestore.instance.collection(username).snapshots().map((event) {
+      event.docs.forEach((element) {
+        ans.add(fromMapDiary(element.data()));
+      });
+    });
+    return ans;
+  }
+
   void write(String input) {
     //ham viet tam su
     setState(() {
       tamSu = input;
-      var collection = FirebaseFirestore.instance.collection('messages');
-      collection
-          .doc(
-              '$mainWidget.username_diary_$getCurrentDate()') // <-- Document ID
-          .set({
-            'content': tamSu,
-            'username': mainWidget.username,
-            'date': getCurrentDate()
-          }) // <-- Your data
-          .then((_) => print('Added'))
-          .catchError((error) => print('Add failed: $error'));
+      //bay gio se truy cap vao collection voi ten user
     });
   }
 
   void openDate(DateTime date) {}
 
-  String getCurrentDate() {
+  static String getCurrentDate() {
     return DateFormat('dd-MM-yyyy').format(DateTime.now());
   }
 
