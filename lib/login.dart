@@ -54,6 +54,7 @@ class _loginState extends State<loginWindow> {
       register(_controller1.text);
     } else {
       if (_controller2.text == UserList.users[_controller1.text]?.password) {
+        mainWidget.username = _controller1.text;
         //them dau cham hoi vi co the se null
         Navigator.push(
           context,

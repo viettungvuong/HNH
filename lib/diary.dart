@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hnh/main.dart';
@@ -22,6 +23,17 @@ class _diaryState extends State<diaryWindow> {
     //ham viet tam su
     setState(() {
       tamSu = input;
+      var collection = FirebaseFirestore.instance.collection('messages');
+      collection
+          .doc(
+              '$mainWidget.username_diary_$getCurrentDate()') // <-- Document ID
+          .set({
+            'content': tamSu,
+            'username': mainWidget.username,
+            'date': getCurrentDate()
+          }) // <-- Your data
+          .then((_) => print('Added'))
+          .catchError((error) => print('Add failed: $error'));
     });
   }
 

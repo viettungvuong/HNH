@@ -19,6 +19,7 @@ void main(List<String> args) async {
 }
 
 class mainWidget extends StatelessWidget {
+  static String? username;
   @override
   Widget build(BuildContext context) {
     // Figma Flutter Generator mainWidget - FRAME
