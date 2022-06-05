@@ -20,77 +20,72 @@ class loginWindow extends StatefulWidget {
 class _loginState extends State<loginWindow> {
   final TextEditingController _controller1 = TextEditingController();
   final TextEditingController _controller2 = TextEditingController();
+  final TextEditingController _controller3 = TextEditingController();
+  final TextEditingController _controller4 = TextEditingController();
+  final TextEditingController _controller5 = TextEditingController();
 
-  void register() async {
+  Future register() async {
+    if (_controller4.text != _controller5.text) {
+      Fluttertoast.showToast(
+        msg: "Password khác nhau khi nhập lại!", // message
+        toastLength: Toast.LENGTH_SHORT, // length
+        gravity: ToastGravity.CENTER, // location
+      );
+    } else {}
     try {
-      final credential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: _controller1.text,
-        password: _controller2.text,
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _controller3.text.trim(), password: _controller4.text.trim());
+      currentUsr = FirebaseAuth.instance.currentUser!;
+      await FirebaseChatCore.instance.createUserInFirestore(
+        types.User(
+          id: currentUsr!.uid, // UID from Firebase Authentication
+        ),
+      );
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => mainWidget()),
       );
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        Fluttertoast.showToast(
-          msg: "Password yếu", // message
-          toastLength: Toast.LENGTH_SHORT, // length
-          gravity: ToastGravity.CENTER, // location
-        );
-      } else if (e.code == 'email-already-in-use') {
+      if (e.code == 'email-already-in-use') {
         Fluttertoast.showToast(
           msg: "Email đã được sử dụng", // message
           toastLength: Toast.LENGTH_SHORT, // length
           gravity: ToastGravity.CENTER, // location
         );
-      }
-    }
-    await FirebaseChatCore.instance.createUserInFirestore(
-      //firebase chat core user
-      types.User(
-        id: currentUsr!.uid, // UID from Firebase Authentication
-      ),
-    );
-
-    currentUsr = FirebaseAuth
-        .instance.currentUser; //mac dinh register xong thi no sign in luon
-  }
-
-  void login() async {
-    try {
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _controller1.text, password: _controller2.text);
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        {
-          register();
-          Fluttertoast.showToast(
-            msg: "Đăng ký thành công", // message
-            toastLength: Toast.LENGTH_SHORT, // length
-            gravity: ToastGravity.CENTER, // location
-          );
-          currentUsr = FirebaseAuth.instance.currentUser;
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => mainWidget()),
-          );
-        }
-      } else if (e.code == 'wrong-password') {
+      } else if (e.code == 'weak-password') {
         Fluttertoast.showToast(
-          msg: "Sai mật khẩu", // message
+          msg: "Mật khẩu quá yếu", // message
           toastLength: Toast.LENGTH_SHORT, // length
           gravity: ToastGravity.CENTER, // location
         );
       }
     }
-    Fluttertoast.showToast(
-      msg: "Đăng nhập thành công", // message
-      toastLength: Toast.LENGTH_SHORT, // length
-      gravity: ToastGravity.CENTER, // location
-    );
-    currentUsr = FirebaseAuth.instance.currentUser;
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => mainWidget()),
-    );
+  }
+
+  Future login() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _controller1.text.trim(), password: _controller2.text.trim());
+      currentUsr = FirebaseAuth.instance.currentUser!;
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => mainWidget()),
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'wrong-password') {
+        Fluttertoast.showToast(
+          msg: "Sai mật khẩu", // message
+          toastLength: Toast.LENGTH_SHORT, // length
+          gravity: ToastGravity.CENTER, // location
+        );
+      } else if (e.code == 'user-not-found') {
+        Fluttertoast.showToast(
+          msg: "Chưa có tài khoản", // message
+          toastLength: Toast.LENGTH_SHORT, // length
+          gravity: ToastGravity.CENTER, // location
+        );
+      }
+    }
   }
 
   @override
@@ -110,7 +105,7 @@ class _loginState extends State<loginWindow> {
               childPadding: EdgeInsets.symmetric(vertical: 50),
               colors: const <Color>[
                 Colors.lightBlue,
-                Colors.blue,
+                Colors.lightBlueAccent,
               ],
               // ignore: sort_child_properties_last
               children: [
@@ -216,7 +211,7 @@ class _loginState extends State<loginWindow> {
                             border: OutlineInputBorder(),
                           ),
                           style: TextStyle(color: Colors.white),
-                          controller: _controller1,
+                          controller: _controller3,
                         ),
                       ),
                       Container(
@@ -235,7 +230,7 @@ class _loginState extends State<loginWindow> {
                             EdgeInsets.only(left: 10, bottom: 40, right: 0),
                         width: 300,
                         child: TextField(
-                          controller: _controller2,
+                          controller: _controller4,
                           obscureText: true,
                           enableSuggestions: false,
                           autocorrect: false,
@@ -261,7 +256,7 @@ class _loginState extends State<loginWindow> {
                             EdgeInsets.only(left: 10, bottom: 40, right: 0),
                         width: 300,
                         child: TextField(
-                          controller: _controller2,
+                          controller: _controller5,
                           obscureText: true,
                           enableSuggestions: false,
                           autocorrect: false,
@@ -274,7 +269,7 @@ class _loginState extends State<loginWindow> {
                       Container(
                         child: ElevatedButton.icon(
                           onPressed: () {
-                            login();
+                            register();
                           },
                           icon: Icon(
                             // <-- Icon
