@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "678424055999",
+    "firebase_url": "https://hnhp-2ee2f-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "hnhp-2ee2f",
     "storage_bucket": "hnhp-2ee2f.appspot.com"
   },
@@ -29,6 +30,13 @@
             {
               "client_id": "678424055999-rrpnfmt5r00epfd4p5bi80j2gp29s0ms.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "678424055999-3bsk48qjj3cnujs225vg8ccvppqmg0ia.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tung.hnh"
+              }
             }
           ]
         }
