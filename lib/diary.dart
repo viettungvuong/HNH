@@ -7,6 +7,8 @@ import 'package:hnh/main.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import 'login.dart';
+
 class Diary {
   late String username;
   late DateTime date;
@@ -38,11 +40,12 @@ class _diaryState extends State<diaryWindow> {
   String tamSu = "";
   TableCalendar? calendar;
 
-  List<Diary> findDiary(String username) {
+  List<Diary> findDiary(String id) {
+    //khi goi ta se dua vao currentUsr.uid
     //ham tim tat ca nhat ki lien quan toi user
     List<Diary> ans = [];
     //foreach doc in collection (co the doi thanh hash table) voi ten la username
-    FirebaseFirestore.instance.collection(username).snapshots().map((event) {
+    FirebaseFirestore.instance.collection(id).snapshots().map((event) {
       event.docs.forEach((element) {
         ans.add(fromMapDiary(element.data()));
       });
@@ -68,6 +71,7 @@ class _diaryState extends State<diaryWindow> {
   final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    findDiary(currentUsr!.uid); //do cai currentUsr co the la null
     return MaterialApp(
       home: Scaffold(
         body: Container(

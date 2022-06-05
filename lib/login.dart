@@ -1,43 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hnh/diary.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
-import 'main.dart';
-
-User fromMapUser(Map<dynamic, dynamic> document) {
-  late User usr;
-  if (document.isNotEmpty) {
-    usr = User(document['username'], document['password']);
-  }
-  return usr;
-}
-
-class User {
-  String? username;
-  String? password;
-  User(this.username, this.password);
-  dynamic getName() => username;
-}
-
-class UserList {
-  static late Map<String, User> users;
-  Future<void> getUsers() async {
-    var collection = FirebaseFirestore.instance.collection('users');
-    collection.get().then((value) => {
-          value.docs.forEach((element) {
-            setState() {
-              users[element.data()['username']] = fromMapUser(element.data());
-            }
-          })
-        });
-  }
-}
+User? currentUsr;
 
 class loginWindow extends StatefulWidget {
   @override
@@ -71,7 +40,17 @@ class _loginState extends State<loginWindow> {
           gravity: ToastGravity.CENTER, // location
         );
       }
+      return;
     }
+    await FirebaseChatCore.instance.createUserInFirestore(
+      //firebase chat core user
+      types.User(
+        firstName: 'John',
+        id: currentUsr!.uid, // UID from Firebase Authentication
+      ),
+    );
+    currentUsr = FirebaseAuth
+        .instance.currentUser; //mac dinh register xong thi no sign in luon
   }
 
   void login() async {
@@ -88,7 +67,9 @@ class _loginState extends State<loginWindow> {
           gravity: ToastGravity.CENTER, // location
         );
       }
+      return;
     }
+    currentUsr = FirebaseAuth.instance.currentUser;
   }
 
   @override
