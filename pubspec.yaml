@@ -44,6 +44,9 @@ dependencies:
   table_calendar: ^3.0.6
   fluttertoast: ^8.0.9
   flutter_firebase_chat_core: ^1.5.4
+  flutter_chat_ui: ^1.5.8
+  bubble: ^1.2.1
+  tab_container: ^2.0.0
 
 dev_dependencies:
   flutter_test:

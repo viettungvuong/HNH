@@ -2,18 +2,21 @@
 
 import 'package:flutter/material.dart';
 import 'package:hnh/chat.dart';
+import 'package:hnh/chat_page.dart';
 import 'package:hnh/diary.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hnh/login.dart';
 import 'firebase_options.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
+    name: 'HNH',
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
     MaterialApp(
-      home: mainWidget(),
+      home: loginWindow(),
     ),
   );
 }
@@ -155,7 +158,7 @@ class mainWidget extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => chatWindow()),
+                          MaterialPageRoute(builder: (context) => chatPage()),
                         );
                       },
                       icon: Image.asset('assets/images/Icon_row302.png'),

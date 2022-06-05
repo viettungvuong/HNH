@@ -14,26 +14,11 @@ class chatWindow extends StatefulWidget {
 }
 
 class _chatState extends State<chatWindow> {
-  bool isShowSticker = false;
-  Future<bool> onBackPress() {
-    if (isShowSticker) {
-      setState(() {
-        isShowSticker = false;
-      });
-    } else {
-      Navigator.pop(context);
-    }
-    return Future.value(false);
-  }
-
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        onBackPress();
-      },
-      child: Scaffold(
+    return MaterialApp(
+      home: Scaffold(
         body: Container(
           decoration: BoxDecoration(
             image: DecorationImage(

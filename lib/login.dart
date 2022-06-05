@@ -1,10 +1,12 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:hnh/main.dart';
+import 'package:tab_container/tab_container.dart';
 
 User? currentUsr;
 
@@ -40,15 +42,14 @@ class _loginState extends State<loginWindow> {
           gravity: ToastGravity.CENTER, // location
         );
       }
-      return;
     }
     await FirebaseChatCore.instance.createUserInFirestore(
       //firebase chat core user
       types.User(
-        firstName: 'John',
         id: currentUsr!.uid, // UID from Firebase Authentication
       ),
     );
+
     currentUsr = FirebaseAuth
         .instance.currentUser; //mac dinh register xong thi no sign in luon
   }
@@ -59,7 +60,19 @@ class _loginState extends State<loginWindow> {
           email: _controller1.text, password: _controller2.text);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        register();
+        {
+          register();
+          Fluttertoast.showToast(
+            msg: "Đăng ký thành công", // message
+            toastLength: Toast.LENGTH_SHORT, // length
+            gravity: ToastGravity.CENTER, // location
+          );
+          currentUsr = FirebaseAuth.instance.currentUser;
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => mainWidget()),
+          );
+        }
       } else if (e.code == 'wrong-password') {
         Fluttertoast.showToast(
           msg: "Sai mật khẩu", // message
@@ -67,55 +80,223 @@ class _loginState extends State<loginWindow> {
           gravity: ToastGravity.CENTER, // location
         );
       }
-      return;
     }
+    Fluttertoast.showToast(
+      msg: "Đăng nhập thành công", // message
+      toastLength: Toast.LENGTH_SHORT, // length
+      gravity: ToastGravity.CENTER, // location
+    );
     currentUsr = FirebaseAuth.instance.currentUser;
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => mainWidget()),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: Column(
-          children: [
-            Container(
-              alignment: Alignment.topLeft,
-              padding: EdgeInsets.only(bottom: 40),
-              child: Text("Username:",
-                  style: TextStyle(fontStyle: FontStyle.italic)),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 30, bottom: 40, right: 0),
-              width: 300,
-              child: TextField(
-                enableSuggestions: false,
-                autocorrect: false,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/images/Trangch.png'),
+                fit: BoxFit.cover),
+          ),
+          child: SizedBox(
+            child: TabContainer(
+              tabEdge: TabEdge.bottom,
+              tabCurve: Curves.easeIn,
+              childPadding: EdgeInsets.symmetric(vertical: 50),
+              colors: const <Color>[
+                Colors.lightBlue,
+                Colors.blue,
+              ],
+              // ignore: sort_child_properties_last
+              children: [
+                Container(
+                  padding: EdgeInsets.only(top: 50),
+                  child: Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.only(top: 50, left: 50, bottom: 10),
+                        child: Text(
+                          "Email:",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25),
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding:
+                            EdgeInsets.only(left: 10, bottom: 40, right: 0),
+                        width: 300,
+                        child: TextField(
+                          enableSuggestions: false,
+                          autocorrect: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                          ),
+                          style: TextStyle(color: Colors.white),
+                          controller: _controller1,
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.only(top: 20, left: 50, bottom: 10),
+                        child: Text(
+                          "Password:",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25),
+                        ),
+                      ),
+                      Container(
+                        padding:
+                            EdgeInsets.only(left: 10, bottom: 40, right: 0),
+                        width: 300,
+                        child: TextField(
+                          controller: _controller2,
+                          obscureText: true,
+                          enableSuggestions: false,
+                          autocorrect: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                          ),
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      Container(
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            login();
+                          },
+                          icon: Icon(
+                            // <-- Icon
+                            Icons.login,
+                            size: 34.0,
+                          ),
+                          label: Text('Tiếp tục'), // <-- Text
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.red,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                controller: _controller1,
-              ),
-            ),
-            Container(
-              alignment: Alignment.topLeft,
-              padding: EdgeInsets.only(top: 40, bottom: 40),
-              child: Text("Password",
-                  style: TextStyle(fontStyle: FontStyle.italic)),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 30, bottom: 40, right: 0),
-              width: 300,
-              child: TextField(
-                controller: _controller2,
-                obscureText: true,
-                enableSuggestions: false,
-                autocorrect: false,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+                Container(
+                  padding: EdgeInsets.only(top: 50),
+                  child: Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.only(top: 50, left: 50, bottom: 10),
+                        child: Text(
+                          "Email:",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25),
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding:
+                            EdgeInsets.only(left: 10, bottom: 40, right: 0),
+                        width: 300,
+                        child: TextField(
+                          enableSuggestions: false,
+                          autocorrect: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                          ),
+                          style: TextStyle(color: Colors.white),
+                          controller: _controller1,
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.only(top: 20, left: 50, bottom: 10),
+                        child: Text(
+                          "Password:",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25),
+                        ),
+                      ),
+                      Container(
+                        padding:
+                            EdgeInsets.only(left: 10, bottom: 40, right: 0),
+                        width: 300,
+                        child: TextField(
+                          controller: _controller2,
+                          obscureText: true,
+                          enableSuggestions: false,
+                          autocorrect: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                          ),
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.only(top: 20, left: 50, bottom: 10),
+                        child: Text(
+                          "Nhập lại Password:",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25),
+                        ),
+                      ),
+                      Container(
+                        padding:
+                            EdgeInsets.only(left: 10, bottom: 40, right: 0),
+                        width: 300,
+                        child: TextField(
+                          controller: _controller2,
+                          obscureText: true,
+                          enableSuggestions: false,
+                          autocorrect: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                          ),
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      Container(
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            login();
+                          },
+                          icon: Icon(
+                            // <-- Icon
+                            Icons.login,
+                            size: 34.0,
+                          ),
+                          label: Text('Tiếp tục'), // <-- Text
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.red,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+              ],
+              tabs: [
+                'Đăng nhập',
+                'Đăng ký',
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
