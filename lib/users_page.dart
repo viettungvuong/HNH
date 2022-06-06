@@ -31,7 +31,9 @@ class UsersPage extends StatelessWidget {
     final hasImage = user.imageUrl != null;
     final name = getUserName(user);
 
-    ImageProvider randomImage() {
+    ImageProvider getImage() {
+      //de tam kh co tham so, mai mot se truyen vao
+      //dua vao uid ta co ctv, va tu do lay avatar phu hop
       int c = Random().nextInt(3);
       switch (c) {
         case 0:
@@ -57,7 +59,7 @@ class UsersPage extends StatelessWidget {
       margin: const EdgeInsets.only(right: 16),
       child: CircleAvatar(
         backgroundColor: hasImage ? Colors.transparent : color,
-        backgroundImage: randomImage(), //neu la cong tac vien thi lay image
+        backgroundImage: getImage(), //neu la cong tac vien thi lay image
         radius: 20,
         child: !hasImage
             ? Text(

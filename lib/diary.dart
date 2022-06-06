@@ -39,18 +39,26 @@ class _diaryState extends State<diaryWindow> {
   bool showCalendar = false;
   String tamSu = "";
   TableCalendar? calendar;
+  Map diary = new Map();
 
-  List<Diary> findDiary(String id) {
+  Map findDiary(String id) {
     //khi goi ta se dua vao currentUsr.uid
     //ham tim tat ca nhat ki lien quan toi user
-    List<Diary> ans = [];
-    //foreach doc in collection (co the doi thanh hash table) voi ten la username
-    FirebaseFirestore.instance.collection(id).snapshots().map((event) {
-      event.docs.forEach((element) {
-        ans.add(fromMapDiary(element.data()));
-      });
+    var data = new Map();
+
+    //o duoi ta se lay tung document co trong collection currentUsr.uid
+
+    getData() async {
+      return await FirebaseFirestore.instance.collection(currentUsr!.uid).get();
+    }
+
+    getData().then((value) {
+      for (var i in value.docs) {
+        data[i.data()['date']] = i.data()['content'];
+      }
     });
-    return ans;
+
+    return data;
   }
 
   void write(String input) {
@@ -58,6 +66,7 @@ class _diaryState extends State<diaryWindow> {
     setState(() {
       tamSu = input;
       //bay gio se truy cap vao collection voi ten user
+      diary[DateFormat('dd-MM-yyyy').format(DateTime.now())] = input;
     });
   }
 
@@ -71,7 +80,8 @@ class _diaryState extends State<diaryWindow> {
   final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    findDiary(currentUsr!.uid); //do cai currentUsr co the la null
+    diary = findDiary(currentUsr!
+        .uid); //do cai currentUsr co the la null nen phai de dau cham than
     return MaterialApp(
       home: Scaffold(
         body: Container(
