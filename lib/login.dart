@@ -23,6 +23,7 @@ class _loginState extends State<loginWindow> {
   final TextEditingController _controller3 = TextEditingController();
   final TextEditingController _controller4 = TextEditingController();
   final TextEditingController _controller5 = TextEditingController();
+  final TextEditingController _controller6 = TextEditingController();
 
   Future register() async {
     if (_controller4.text != _controller5.text) {
@@ -38,6 +39,7 @@ class _loginState extends State<loginWindow> {
       currentUsr = FirebaseAuth.instance.currentUser!;
       await FirebaseChatCore.instance.createUserInFirestore(
         types.User(
+          firstName: _controller6.text,
           id: currentUsr!.uid, // UID from Firebase Authentication
         ),
       );
@@ -190,13 +192,13 @@ class _loginState extends State<loginWindow> {
                     children: [
                       Container(
                         alignment: Alignment.topLeft,
-                        padding: EdgeInsets.only(top: 50, left: 50, bottom: 10),
+                        padding: EdgeInsets.only(top: 30, left: 50, bottom: 10),
                         child: Text(
                           "Email:",
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 25),
+                              fontSize: 18),
                         ),
                       ),
                       Container(
@@ -222,7 +224,7 @@ class _loginState extends State<loginWindow> {
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 25),
+                              fontSize: 18),
                         ),
                       ),
                       Container(
@@ -248,7 +250,7 @@ class _loginState extends State<loginWindow> {
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 25),
+                              fontSize: 18),
                         ),
                       ),
                       Container(
@@ -257,6 +259,32 @@ class _loginState extends State<loginWindow> {
                         width: 300,
                         child: TextField(
                           controller: _controller5,
+                          obscureText: true,
+                          enableSuggestions: false,
+                          autocorrect: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                          ),
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.only(top: 20, left: 50, bottom: 10),
+                        child: Text(
+                          "Tên:",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        ),
+                      ),
+                      Container(
+                        padding:
+                            EdgeInsets.only(left: 10, bottom: 40, right: 0),
+                        width: 300,
+                        child: TextField(
+                          controller: _controller6,
                           obscureText: true,
                           enableSuggestions: false,
                           autocorrect: false,
