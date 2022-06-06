@@ -1,3 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -27,11 +31,33 @@ class UsersPage extends StatelessWidget {
     final hasImage = user.imageUrl != null;
     final name = getUserName(user);
 
+    ImageProvider randomImage() {
+      int c = Random().nextInt(3);
+      switch (c) {
+        case 0:
+          {
+            return AssetImage('assets/images/Asset 1.png');
+          }
+        case 1:
+          {
+            return AssetImage('assets/images/Asset 2.png');
+          }
+        case 2:
+          {
+            return AssetImage('assets/images/Asset 3.png');
+          }
+        default:
+          {
+            return AssetImage('assets/images/Asset 4.png');
+          }
+      }
+    }
+
     return Container(
       margin: const EdgeInsets.only(right: 16),
       child: CircleAvatar(
         backgroundColor: hasImage ? Colors.transparent : color,
-        backgroundImage: hasImage ? NetworkImage(user.imageUrl!) : null,
+        backgroundImage: randomImage(),
         radius: 20,
         child: !hasImage
             ? Text(
