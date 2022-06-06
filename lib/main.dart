@@ -6,6 +6,7 @@ import 'package:hnh/chat_page.dart';
 import 'package:hnh/diary.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hnh/login.dart';
+import 'package:hnh/users_page.dart';
 import 'firebase_options.dart';
 
 void main(List<String> args) async {
@@ -158,7 +159,7 @@ class mainWidget extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => chatPage()),
+                          MaterialPageRoute(builder: (context) => UsersPage()),
                         );
                       },
                       icon: Image.asset('assets/images/Icon_row302.png'),

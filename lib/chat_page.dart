@@ -1,76 +1,67 @@
-import 'dart:convert';
-import 'dart:math';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
-import 'package:bubble/bubble.dart';
-import 'package:hnh/login.dart';
+import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
+import 'package:http/http.dart' as http;
 
-// For the testing purposes, you should probably use https://pub.dev/packages/uuid
+class ChatPage extends StatefulWidget {
+  const ChatPage({
+    Key? key,
+    required this.room,
+  }) : super(key: key);
 
-Widget _bubbleBuilder(
-  Widget child, {
-  required message,
-  required nextMessageInGroup,
-}) {
-  return Bubble(
-    child: child,
-    color: currentUsr!.uid != message.author.id ||
-            message.type == types.MessageType.image
-        ? const Color(0xfff5f5f7)
-        : const Color(
-            0xff6f61e8), //tuc la kiem tra xem user co phai la nguoi viet tin nhan hay kh, tu do ap dung mau
-    margin:
-        nextMessageInGroup ? const BubbleEdges.symmetric(horizontal: 6) : null,
-    nip: nextMessageInGroup
-        ? BubbleNip.no
-        : currentUsr!.uid != message.author.id
-            ? BubbleNip.leftBottom
-            : BubbleNip.rightBottom,
-  );
-}
-
-String randomString() {
-  final random = Random.secure();
-  final values = List<int>.generate(16, (i) => random.nextInt(255));
-  return base64UrlEncode(values);
-}
-
-class chatPage extends StatefulWidget {
-  const chatPage({Key? key}) : super(key: key);
+  final types.Room room;
 
   @override
   _ChatPageState createState() => _ChatPageState();
 }
 
-class _ChatPageState extends State<chatPage> {
-  List<types.Message> _messages = [];
-  final _user = types.User(id: currentUsr!.uid);
+class _ChatPageState extends State<ChatPage> {
+  void _handlePreviewDataFetched(
+    types.TextMessage message,
+    types.PreviewData previewData,
+  ) {
+    final updatedMessage = message.copyWith(previewData: previewData);
 
-  void _addMessage(types.Message message) {
-    setState(() {
-      _messages.insert(0, message);
-    });
+    FirebaseChatCore.instance.updateMessage(updatedMessage, widget.room.id);
   }
 
   void _handleSendPressed(types.PartialText message) {
-    final textMessage = types.TextMessage(
-      author: _user,
-      createdAt: DateTime.now().millisecondsSinceEpoch,
-      id: randomString(),
-      text: message.text,
+    FirebaseChatCore.instance.sendMessage(
+      message,
+      widget.room.id,
     );
-
-    _addMessage(textMessage);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Chat(
-        messages: _messages,
-        onSendPressed: _handleSendPressed,
-        user: _user,
+      appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+        title: const Text('Chat'),
+      ),
+      body: StreamBuilder<types.Room>(
+        initialData: widget.room,
+        stream: FirebaseChatCore.instance.room(widget.room.id),
+        builder: (context, snapshot) {
+          return StreamBuilder<List<types.Message>>(
+            initialData: const [],
+            stream: FirebaseChatCore.instance.messages(snapshot.data!),
+            builder: (context, snapshot) {
+              return Chat(
+                messages: snapshot.data ?? [],
+                onPreviewDataFetched: _handlePreviewDataFetched,
+                onSendPressed: _handleSendPressed,
+                user: types.User(
+                  id: FirebaseChatCore.instance.firebaseUser?.uid ?? '',
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }
