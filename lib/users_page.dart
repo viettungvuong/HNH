@@ -57,7 +57,7 @@ class UsersPage extends StatelessWidget {
       margin: const EdgeInsets.only(right: 16),
       child: CircleAvatar(
         backgroundColor: hasImage ? Colors.transparent : color,
-        backgroundImage: randomImage(),
+        backgroundImage: randomImage(), //neu la cong tac vien thi lay image
         radius: 20,
         child: !hasImage
             ? Text(
@@ -74,7 +74,7 @@ class UsersPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.light,
-        title: const Text('Các công tác viên tư vấn'),
+        title: const Text('Các cộng tác viên tư vấn'),
       ),
       body: StreamBuilder<List<types.User>>(
         stream: FirebaseChatCore.instance.users(),
