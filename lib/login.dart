@@ -26,7 +26,19 @@ class _loginState extends State<loginWindow> {
   final TextEditingController _controller6 = TextEditingController();
 
   Future register() async {
-    if (_controller4.text != _controller5.text) {
+    if (_controller3.text == "") {
+      Fluttertoast.showToast(
+        msg: "Bạn chưa nhập mail", // message
+        toastLength: Toast.LENGTH_SHORT, // length
+        gravity: ToastGravity.CENTER, // location
+      );
+    } else if (_controller6.text == "") {
+      Fluttertoast.showToast(
+        msg: "Bạn chưa nhập tên", // message
+        toastLength: Toast.LENGTH_SHORT, // length
+        gravity: ToastGravity.CENTER, // location
+      );
+    } else if (_controller4.text != _controller5.text) {
       Fluttertoast.showToast(
         msg: "Password khác nhau khi nhập lại!", // message
         toastLength: Toast.LENGTH_SHORT, // length
@@ -285,7 +297,6 @@ class _loginState extends State<loginWindow> {
                         width: 300,
                         child: TextField(
                           controller: _controller6,
-                          obscureText: true,
                           enableSuggestions: false,
                           autocorrect: false,
                           decoration: InputDecoration(

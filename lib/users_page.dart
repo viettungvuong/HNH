@@ -48,7 +48,7 @@ class UsersPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.light,
-        title: const Text('Users'),
+        title: const Text('Các công tác viên tư vấn'),
       ),
       body: StreamBuilder<List<types.User>>(
         stream: FirebaseChatCore.instance.users(),
@@ -72,7 +72,7 @@ class UsersPage extends StatelessWidget {
               return GestureDetector(
                 onTap: () {
                   _handlePressed(user, context);
-                },
+                }, //khi nhan vao ten nguoi dung
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16,
@@ -81,7 +81,12 @@ class UsersPage extends StatelessWidget {
                   child: Row(
                     children: [
                       _buildAvatar(user),
-                      Text(getUserName(user)),
+                      Text(
+                        getUserName(user),
+                        style: TextStyle(
+                          fontSize: 25,
+                        ),
+                      ),
                     ],
                   ),
                 ),
