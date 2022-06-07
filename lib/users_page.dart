@@ -38,7 +38,7 @@ class UsersPage extends StatelessWidget {
       switch (c) {
         case 0:
           {
-            return AssetImage('assets/images/Asset 1.png');
+            return AssetImage('assets/images/Asset 5.png');
           }
         case 1:
           {

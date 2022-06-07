@@ -28,6 +28,7 @@ class diaryWindow extends StatefulWidget {
 }
 
 class _diaryState extends State<diaryWindow> {
+  bool firstOpened = false;
   bool showCalendar = false;
   String tamSu = "";
   TableCalendar? calendar;
@@ -63,9 +64,8 @@ class _diaryState extends State<diaryWindow> {
     }); //bay gio se truy cap vao collection voi ten user
     var collection = FirebaseFirestore.instance.collection(currentUsr!.uid);
     collection
-        .doc(DateFormat('dd-MM-yyyy')
-            .format(DateTime.now())) // <-- Doc ID where data should be updated.
-        .update({'content': input}) // <-- Updated data
+        .doc(date) // <-- Doc ID where data should be updated.
+        .set({'content': input}) // <-- Updated data
         .then((_) => print('Updated'))
         .catchError((error) => print('Update failed: $error'));
   }
@@ -74,7 +74,7 @@ class _diaryState extends State<diaryWindow> {
     setState(() {
       showCalendar = false;
       date = DateFormat('dd-MM-yyyy').format(chosenDate);
-      tamSu = diary[date];
+      tamSu = (diary[date] == null ? "" : diary[date]);
     });
   }
 
@@ -84,6 +84,11 @@ class _diaryState extends State<diaryWindow> {
   Widget build(BuildContext context) {
     diary = findDiary(currentUsr!
         .uid); //do cai currentUsr co the la null nen phai de dau cham than
+    if (!firstOpened) {
+      firstOpened = true;
+      date = DateFormat('dd-MM-yyyy').format(DateTime.now());
+      tamSu = (diary[date] == null ? "" : diary[date]);
+    }
     return MaterialApp(
       home: Scaffold(
         body: Container(
@@ -144,11 +149,13 @@ class _diaryState extends State<diaryWindow> {
                   lastDay: DateTime.utc(2040, 3, 14),
                   focusedDay: focused,
                   onPageChanged: (focusedDay) {
-                    focused = focusedDay;
+                    setState(() {
+                      focused = focusedDay;
+                    });
                   },
                   onDaySelected: (selectedDay, focusedDay) {
                     setState(() {
-                      focused = focusedDay;
+                      focused = selectedDay;
                       openDate(focused); //mo coi diary cua ngay do
                     });
                   },
