@@ -32,13 +32,12 @@ class _diaryState extends State<diaryWindow> {
   bool showCalendar = false;
   String tamSu = "";
   TableCalendar? calendar;
-  Map diary = new Map();
+  Map? diary = new Map();
   String date = DateFormat('dd-MM-yyyy').format(DateTime.now());
 
-  Map findDiary(String id) {
+  Future<void> findDiary(String id) async {
     //khi goi ta se dua vao currentUsr.uid
     //ham tim tat ca nhat ki lien quan toi user
-    var data = new Map();
 
     //o duoi ta se lay tung document co trong collection currentUsr.uid
 
@@ -48,19 +47,16 @@ class _diaryState extends State<diaryWindow> {
 
     getData().then((value) {
       for (var i in value.docs) {
-        data[i.id] = i.data()['content']; //luu vao map
+        diary![i.id] = i.data()['content']; //luu vao map
       }
     });
-
-    return data;
   }
 
   void write(String input) {
     //ham viet tam su
     setState(() {
       tamSu += input;
-
-      diary[DateFormat('dd-MM-yyyy').format(DateTime.now())] = input;
+      diary![date] = input;
     }); //bay gio se truy cap vao collection voi ten user
     var collection = FirebaseFirestore.instance.collection(currentUsr!.uid);
     collection
@@ -74,21 +70,28 @@ class _diaryState extends State<diaryWindow> {
     setState(() {
       showCalendar = false;
       date = DateFormat('dd-MM-yyyy').format(chosenDate);
-      tamSu = (diary[date] == null ? "" : diary[date]);
+      tamSu = (diary![date] == null ? "" : diary![date])!;
     });
   }
 
   DateTime focused = DateTime.now();
   final TextEditingController _controller = TextEditingController();
   @override
+  void initState() {
+    super.initState();
+    findDiary(currentUsr!.uid);
+    var likesRef =
+        FirebaseFirestore.instance.collection(currentUsr!.uid).doc(date);
+    likesRef.get().then((value) {
+      String todayDiary = value.data()!['content'];
+      setState(() {
+        tamSu = todayDiary;
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    diary = findDiary(currentUsr!
-        .uid); //do cai currentUsr co the la null nen phai de dau cham than
-    if (!firstOpened) {
-      firstOpened = true;
-      date = DateFormat('dd-MM-yyyy').format(DateTime.now());
-      tamSu = (diary[date] == null ? "" : diary[date]);
-    }
     return MaterialApp(
       home: Scaffold(
         body: Container(
