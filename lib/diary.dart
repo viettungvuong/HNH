@@ -75,6 +75,8 @@ class _diaryState extends State<diaryWindow> {
   }
 
   DateTime focused = DateTime.now();
+  DateTime selected = DateTime.now();
+
   final TextEditingController _controller = TextEditingController();
   @override
   void initState() {
@@ -87,6 +89,8 @@ class _diaryState extends State<diaryWindow> {
       setState(() {
         tamSu = todayDiary;
       });
+      // o day minh dung then tai vi khi moi mo thi firebase no se chua load kip lien document tren firestore
+      // vi the ma ta phai doi no xong roi tien hanh tiep
     });
   }
 
@@ -151,6 +155,7 @@ class _diaryState extends State<diaryWindow> {
                   firstDay: DateTime.utc(2010, 10, 16),
                   lastDay: DateTime.utc(2040, 3, 14),
                   focusedDay: focused,
+                  selectedDayPredicate: (day) => isSameDay(selected, day),
                   onPageChanged: (focusedDay) {
                     setState(() {
                       focused = focusedDay;
@@ -158,7 +163,8 @@ class _diaryState extends State<diaryWindow> {
                   },
                   onDaySelected: (selectedDay, focusedDay) {
                     setState(() {
-                      focused = selectedDay;
+                      focused = focusedDay;
+                      selected = selectedDay;
                       openDate(focused); //mo coi diary cua ngay do
                     });
                   },
