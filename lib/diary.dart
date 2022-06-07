@@ -20,14 +20,6 @@ class Diary {
   }
 }
 
-Diary fromMapDiary(Map<dynamic, dynamic> document) {
-  late Diary diary;
-  if (document.isNotEmpty) {
-    diary = Diary(document['username'], document['date'], document['content']);
-  }
-  return diary;
-}
-
 class diaryWindow extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -40,6 +32,7 @@ class _diaryState extends State<diaryWindow> {
   String tamSu = "";
   TableCalendar? calendar;
   Map diary = new Map();
+  String date = DateFormat('dd-MM-yyyy').format(DateTime.now());
 
   Map findDiary(String id) {
     //khi goi ta se dua vao currentUsr.uid
@@ -54,7 +47,7 @@ class _diaryState extends State<diaryWindow> {
 
     getData().then((value) {
       for (var i in value.docs) {
-        data[i.data()['date']] = i.data()['content'];
+        data[i.id] = i.data()['content']; //luu vao map
       }
     });
 
@@ -64,16 +57,25 @@ class _diaryState extends State<diaryWindow> {
   void write(String input) {
     //ham viet tam su
     setState(() {
-      tamSu = input;
-      //bay gio se truy cap vao collection voi ten user
+      tamSu += input;
+
       diary[DateFormat('dd-MM-yyyy').format(DateTime.now())] = input;
-    });
+    }); //bay gio se truy cap vao collection voi ten user
+    var collection = FirebaseFirestore.instance.collection(currentUsr!.uid);
+    collection
+        .doc(DateFormat('dd-MM-yyyy')
+            .format(DateTime.now())) // <-- Doc ID where data should be updated.
+        .update({'content': input}) // <-- Updated data
+        .then((_) => print('Updated'))
+        .catchError((error) => print('Update failed: $error'));
   }
 
-  void openDate(DateTime date) {}
-
-  static String getCurrentDate() {
-    return DateFormat('dd-MM-yyyy').format(DateTime.now());
+  void openDate(DateTime chosenDate) {
+    setState(() {
+      showCalendar = false;
+      date = DateFormat('dd-MM-yyyy').format(chosenDate);
+      tamSu = diary[date];
+    });
   }
 
   DateTime focused = DateTime.now();
@@ -129,7 +131,7 @@ class _diaryState extends State<diaryWindow> {
               alignment: Alignment.topCenter,
               padding: EdgeInsets.only(top: 20),
               child: Text(
-                getCurrentDate(),
+                date,
                 style: TextStyle(fontSize: 30),
               ),
             ),
