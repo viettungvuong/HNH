@@ -68,6 +68,7 @@ class _loginState extends State<loginWindow> {
           .set({'content': 1});
       findDiary(currentUsr!.uid);
       check();
+      getName();
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => mainWidget()),
@@ -96,6 +97,7 @@ class _loginState extends State<loginWindow> {
       currentUsr = FirebaseAuth.instance.currentUser!;
       findDiary(currentUsr!.uid);
       check();
+      getName();
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => mainWidget()),

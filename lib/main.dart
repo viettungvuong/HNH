@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hnh/chat.dart';
@@ -10,6 +11,17 @@ import 'package:hnh/login.dart';
 import 'package:hnh/users_page.dart';
 import 'firebase_options.dart';
 
+String currentName = "";
+getName() async {
+  await FirebaseFirestore.instance
+      .collection('users')
+      .doc(currentUsr!.uid)
+      .get()
+      .then((value) {
+    currentName = value.data()!['firstName'];
+  });
+}
+
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -17,9 +29,14 @@ void main(List<String> args) async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   currentUsr = FirebaseAuth.instance.currentUser;
+  if (currentUsr != null) {
+    getName();
+    findDiary(currentUsr!.uid);
+    check();
+  }
   runApp(
     MaterialApp(
-      home: (currentUsr == null) ? loginWindow() : mainWidget(),
+      home: (currentUsr != null) ? mainWidget() : loginWindow(),
     ),
   );
 }
@@ -29,6 +46,8 @@ class mainWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    check();
+    getName();
     // Figma Flutter Generator mainWidget - FRAME
     return WillPopScope(
       onWillPop: () async {
@@ -46,7 +65,20 @@ class mainWidget extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                  padding: EdgeInsets.only(top: 100, bottom: 40),
+                  padding: EdgeInsets.only(top: 60, bottom: 10),
+                  child: Text(
+                    "Username: $currentName",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      color: Colors.white,
+                      decoration: TextDecoration.none,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'ActionManShaded',
+                    ),
+                  )),
+              Container(
+                  padding: EdgeInsets.only(top: 20, bottom: 40),
                   child: Text(
                     "YOUR BODY",
                     textAlign: TextAlign.center,
