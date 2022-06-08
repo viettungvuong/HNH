@@ -105,7 +105,7 @@ class _RoomsPageState extends State<RoomsPage> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         fullscreenDialog: true,
-                        builder: (context) => const UsersPage(),
+                        builder: (context) => UsersPage(),
                       ),
                     );
                   },

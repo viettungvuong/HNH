@@ -7,6 +7,7 @@ import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:hnh/main.dart';
+import 'package:hnh/users_page.dart';
 import 'package:tab_container/tab_container.dart';
 
 import 'diary.dart';
@@ -66,6 +67,7 @@ class _loginState extends State<loginWindow> {
           .doc("test")
           .set({'content': 1});
       findDiary(currentUsr!.uid);
+      check();
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => mainWidget()),
@@ -93,6 +95,7 @@ class _loginState extends State<loginWindow> {
           email: _controller1.text.trim(), password: _controller2.text.trim());
       currentUsr = FirebaseAuth.instance.currentUser!;
       findDiary(currentUsr!.uid);
+      check();
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => mainWidget()),

@@ -7,12 +7,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
+import 'package:hnh/login.dart';
 import 'chat.dart';
 import 'chat_page.dart';
 import 'util.dart';
 
+bool isCTV = true;
+
+check() async {
+  await FirebaseFirestore.instance
+      .collection('users')
+      .doc(currentUsr!.uid)
+      .get()
+      .then((value) {
+    isCTV = (value.data()!['role'] == 'admin'
+        ? true
+        : false); // Access field firebase
+  });
+}
+
 class UsersPage extends StatelessWidget {
-  const UsersPage({Key? key}) : super(key: key);
+  UsersPage({Key? key}) : super(key: key);
 
   void _handlePressed(types.User otherUser, BuildContext context) async {
     final room = await FirebaseChatCore.instance.createRoom(otherUser);
@@ -56,7 +71,9 @@ class UsersPage extends StatelessWidget {
         title: const Text('Các cộng tác viên tư vấn'),
       ),
       body: StreamBuilder<List<types.User>>(
-        stream: FirebaseChatCore.instance.usersCTV(),
+        stream: (!isCTV
+            ? FirebaseChatCore.instance.usersCTV()
+            : FirebaseChatCore.instance.users()),
         initialData: const [],
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
