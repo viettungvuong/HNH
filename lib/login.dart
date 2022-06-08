@@ -9,6 +9,8 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:hnh/main.dart';
 import 'package:tab_container/tab_container.dart';
 
+import 'diary.dart';
+
 User? currentUsr;
 
 class loginWindow extends StatefulWidget {
@@ -188,6 +190,7 @@ class _loginState extends State<loginWindow> {
                         child: ElevatedButton.icon(
                           onPressed: () {
                             login();
+                            findDiary(currentUsr!.uid);
                           },
                           icon: Icon(
                             // <-- Icon
@@ -314,6 +317,7 @@ class _loginState extends State<loginWindow> {
                         child: ElevatedButton.icon(
                           onPressed: () {
                             register();
+                            findDiary(currentUsr!.uid);
                           },
                           icon: Icon(
                             // <-- Icon

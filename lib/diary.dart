@@ -9,15 +9,23 @@ import 'package:table_calendar/table_calendar.dart';
 
 import 'login.dart';
 
-class Diary {
-  late String username;
-  late DateTime date;
-  late String content;
-  Diary(String str1, String str2, String str3) {
-    username = str1;
-    content = str2;
-    date = DateFormat('dd-MM-yyyy').parse(str2);
+Map? diary = new Map();
+
+Future<void> findDiary(String id) async {
+  //khi goi ta se dua vao currentUsr.uid
+  //ham tim tat ca nhat ki lien quan toi user
+
+  //o duoi ta se lay tung document co trong collection currentUsr.uid
+
+  getData() async {
+    return await FirebaseFirestore.instance.collection(currentUsr!.uid).get();
   }
+
+  getData().then((value) {
+    for (var i in value.docs) {
+      diary![i.id] = i.data()['content']; //luu vao map
+    }
+  });
 }
 
 class diaryWindow extends StatefulWidget {
@@ -32,25 +40,8 @@ class _diaryState extends State<diaryWindow> {
   bool showCalendar = false;
   String tamSu = "";
   TableCalendar? calendar;
-  Map? diary = new Map();
+
   String date = DateFormat('dd-MM-yyyy').format(DateTime.now());
-
-  Future<void> findDiary(String id) async {
-    //khi goi ta se dua vao currentUsr.uid
-    //ham tim tat ca nhat ki lien quan toi user
-
-    //o duoi ta se lay tung document co trong collection currentUsr.uid
-
-    getData() async {
-      return await FirebaseFirestore.instance.collection(currentUsr!.uid).get();
-    }
-
-    getData().then((value) {
-      for (var i in value.docs) {
-        diary![i.id] = i.data()['content']; //luu vao map
-      }
-    });
-  }
 
   void write(String input) {
     //ham viet tam su
@@ -81,7 +72,7 @@ class _diaryState extends State<diaryWindow> {
   @override
   void initState() {
     super.initState();
-    findDiary(currentUsr!.uid);
+
     var likesRef =
         FirebaseFirestore.instance.collection(currentUsr!.uid).doc(date);
     likesRef.get().then((value) {
