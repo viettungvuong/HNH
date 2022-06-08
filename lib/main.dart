@@ -28,8 +28,13 @@ class mainWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Figma Flutter Generator mainWidget - FRAME
-    return MaterialApp(
-      home: Scaffold(
+    return WillPopScope(
+      onWillPop: () async {
+        // You can do some work here.
+        // Returning true allows the pop to happen, returning false prevents it.
+        return false;
+      },
+      child: Scaffold(
         body: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
