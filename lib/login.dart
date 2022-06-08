@@ -54,6 +54,9 @@ class _loginState extends State<loginWindow> {
       currentUsr = FirebaseAuth.instance.currentUser!;
       await FirebaseChatCore.instance.createUserInFirestore(
         types.User(
+          role: (_controller6.text.contains(RegExp('CTV'), 0)
+              ? types.Role.values[0]
+              : types.Role.values[3]),
           firstName: _controller6.text,
           id: currentUsr!.uid, // UID from Firebase Authentication
         ),
@@ -62,6 +65,7 @@ class _loginState extends State<loginWindow> {
           .collection(currentUsr!.uid)
           .doc("test")
           .set({'content': 1});
+      findDiary(currentUsr!.uid);
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => mainWidget()),
@@ -88,6 +92,7 @@ class _loginState extends State<loginWindow> {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _controller1.text.trim(), password: _controller2.text.trim());
       currentUsr = FirebaseAuth.instance.currentUser!;
+      findDiary(currentUsr!.uid);
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => mainWidget()),
@@ -190,7 +195,6 @@ class _loginState extends State<loginWindow> {
                         child: ElevatedButton.icon(
                           onPressed: () {
                             login();
-                            findDiary(currentUsr!.uid);
                           },
                           icon: Icon(
                             // <-- Icon
@@ -317,7 +321,6 @@ class _loginState extends State<loginWindow> {
                         child: ElevatedButton.icon(
                           onPressed: () {
                             register();
-                            findDiary(currentUsr!.uid);
                           },
                           icon: Icon(
                             // <-- Icon

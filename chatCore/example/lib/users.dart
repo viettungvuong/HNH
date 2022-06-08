@@ -1,14 +1,8 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'dart:math';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'chat.dart';
-import 'chat_page.dart';
 import 'util.dart';
 
 class UsersPage extends StatelessWidget {
@@ -36,7 +30,7 @@ class UsersPage extends StatelessWidget {
       margin: const EdgeInsets.only(right: 16),
       child: CircleAvatar(
         backgroundColor: hasImage ? Colors.transparent : color,
-        backgroundImage: hasImage ? AssetImage(user.imageUrl!) : null,
+        backgroundImage: hasImage ? NetworkImage(user.imageUrl!) : null,
         radius: 20,
         child: !hasImage
             ? Text(
@@ -53,10 +47,10 @@ class UsersPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.light,
-        title: const Text('Các cộng tác viên tư vấn'),
+        title: const Text('Users'),
       ),
       body: StreamBuilder<List<types.User>>(
-        stream: FirebaseChatCore.instance.usersCTV(),
+        stream: FirebaseChatCore.instance.users(),
         initialData: const [],
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -77,7 +71,7 @@ class UsersPage extends StatelessWidget {
               return GestureDetector(
                 onTap: () {
                   _handlePressed(user, context);
-                }, //khi nhan vao ten nguoi dung
+                },
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16,
@@ -86,12 +80,7 @@ class UsersPage extends StatelessWidget {
                   child: Row(
                     children: [
                       _buildAvatar(user),
-                      Text(
-                        getUserName(user),
-                        style: TextStyle(
-                          fontSize: 25,
-                        ),
-                      ),
+                      Text(getUserName(user)),
                     ],
                   ),
                 ),
