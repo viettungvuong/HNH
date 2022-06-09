@@ -156,6 +156,7 @@ class _diaryState extends State<diaryWindow> {
                     setState(() {
                       focused = focusedDay;
                       selected = selectedDay;
+                      _controller.clear();
                       openDate(focused); //mo coi diary cua ngay do
                     });
                   },
