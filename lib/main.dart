@@ -65,35 +65,49 @@ class mainWidget extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Row(
-                children: [
-                  Text(
-                    "Username: $currentName",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Colors.white,
-                      decoration: TextDecoration.none,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'ActionManShaded',
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 40),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(left: 50),
+                      child: Text(
+                        "Username: $currentName",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          color: Colors.white,
+                          decoration: TextDecoration.none,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'ActionManShaded',
+                        ),
+                      ),
                     ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      FirebaseAuth.instance.signOut();
-                      Fluttertoast.showToast(
-                        msg: "Đã đăng xuất", // message
-                        toastLength: Toast.LENGTH_SHORT, // length
-                        gravity: ToastGravity.CENTER, // location
-                      );
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => loginWindow()),
-                      );
-                    },
-                    icon: Image.asset('assets/images/Logout.png'),
-                  ),
-                ],
+                    SizedBox(
+                      width: 50,
+                    ),
+                    Container(
+                      alignment: Alignment.topRight,
+                      padding: EdgeInsets.only(right: 40),
+                      child: IconButton(
+                        onPressed: () {
+                          FirebaseAuth.instance.signOut();
+                          Fluttertoast.showToast(
+                            msg: "Đã đăng xuất", // message
+                            toastLength: Toast.LENGTH_SHORT, // length
+                            gravity: ToastGravity.CENTER, // location
+                          );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => loginWindow()),
+                          );
+                        },
+                        icon: Image.asset('assets/images/Logout.png'),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Container(
                   padding: EdgeInsets.only(top: 20, bottom: 40),
