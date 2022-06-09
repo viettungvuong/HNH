@@ -12,7 +12,15 @@ class baiTap {
   baiTap(this.name, this.moTa, this.cacBuoc);
 }
 
-class baiTapWidget extends StatelessWidget {
+class baiTapWidget extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _baiTapState();
+  }
+}
+
+class _baiTapState extends State<baiTapWidget> {
+  bool tapped = false;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
