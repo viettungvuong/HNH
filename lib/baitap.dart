@@ -20,6 +20,7 @@ class baiTapWidget extends StatefulWidget {
 }
 
 class _baiTapState extends State<baiTapWidget> {
+  String name = "";
   bool tapped = false;
   @override
   Widget build(BuildContext context) {
@@ -34,17 +35,31 @@ class _baiTapState extends State<baiTapWidget> {
                 children: snapshot.data!.docs.map((DocumentSnapshot document) {
                   Map<String, dynamic> data =
                       document.data()! as Map<String, dynamic>;
+                  setState(() {
+                    name = data.toString();
+                  });
                   return ListTile(
-                    title: Text(data.toString()),
-                    subtitle: Text((data['moTa'] ?? "")),
+                    title: Text(
+                      name,
+                      style: TextStyle(fontSize: 25),
+                    ),
+                    subtitle: Text(
+                      (data['moTa'] ?? ""),
+                      style: TextStyle(fontSize: 25),
+                    ),
                     onTap: () {
                       slideDialog.showSlideDialog(
                         context: context,
-                        child: Text(
-                          data['cacBuoc'],
-                          style: TextStyle(color: Colors.blueAccent),
+                        child: Column(
+                          children: [
+                            Image(image: AssetImage('assets/images/$name.png')),
+                            Text(
+                              data['cacBuoc'],
+                              style: TextStyle(color: Colors.blueAccent),
+                            ),
+                          ],
                         ),
-                        pillColor: Colors.blue,
+                        pillColor: Colors.lightBlueAccent,
                         backgroundColor: Colors.white,
                       );
                     },

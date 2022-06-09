@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hnh/chat.dart';
 import 'package:hnh/chat_page.dart';
 import 'package:hnh/diary.dart';
@@ -64,9 +65,9 @@ class mainWidget extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Container(
-                  padding: EdgeInsets.only(top: 60, bottom: 10),
-                  child: Text(
+              Row(
+                children: [
+                  Text(
                     "Username: $currentName",
                     textAlign: TextAlign.left,
                     style: TextStyle(
@@ -76,7 +77,24 @@ class mainWidget extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       fontFamily: 'ActionManShaded',
                     ),
-                  )),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      FirebaseAuth.instance.signOut();
+                      Fluttertoast.showToast(
+                        msg: "Đã đăng xuất", // message
+                        toastLength: Toast.LENGTH_SHORT, // length
+                        gravity: ToastGravity.CENTER, // location
+                      );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => loginWindow()),
+                      );
+                    },
+                    icon: Image.asset('assets/images/Logout.png'),
+                  ),
+                ],
+              ),
               Container(
                   padding: EdgeInsets.only(top: 20, bottom: 40),
                   child: Text(
