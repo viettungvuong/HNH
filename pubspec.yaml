@@ -51,6 +51,7 @@ dependencies:
   tab_container: ^2.0.0
   we_slide: ^2.3.0
   slide_popup_dialog: ^0.0.2
+  sizer: ^2.0.15
 
 dev_dependencies:
   flutter_test:

@@ -63,8 +63,7 @@ class mainWidget extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(vertical: 40),
                 child: Container(
-                  alignment: Alignment.topRight,
-                  padding: EdgeInsets.only(right: 40),
+                  alignment: Alignment.topCenter,
                   child: IconButton(
                     onPressed: () {
                       FirebaseAuth.instance.signOut();
