@@ -123,6 +123,7 @@ class _loginState extends State<loginWindow> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        resizeToAvoidBottomInset: false, //tranh overflow
         body: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
