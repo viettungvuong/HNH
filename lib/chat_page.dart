@@ -20,6 +20,7 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+  TextEditingController _controller = TextEditingController();
   void _handlePreviewDataFetched(
     types.TextMessage message,
     types.PreviewData previewData,

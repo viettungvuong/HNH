@@ -204,6 +204,7 @@ class _diaryState extends State<diaryWindow> {
                       child: IconButton(
                         onPressed: () {
                           write(_controller.text);
+                          _controller.clear();
                         },
                         icon: Image.asset('assets/images/send.png'),
                       ),

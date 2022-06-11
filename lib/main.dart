@@ -29,15 +29,9 @@ void main(List<String> args) async {
     name: 'HNH',
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  currentUsr = FirebaseAuth.instance.currentUser;
-  if (currentUsr != null) {
-    getName();
-    findDiary(currentUsr!.uid);
-    check();
-  }
   runApp(
     MaterialApp(
-      home: (currentUsr != null) ? mainWidget() : loginWindow(),
+      home: loginWindow(),
     ),
   );
 }
