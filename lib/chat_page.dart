@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
+import 'package:hnh/users_page.dart';
 import 'package:http/http.dart' as http;
 
 class ChatPage extends StatefulWidget {
@@ -43,6 +44,25 @@ class _ChatPageState extends State<ChatPage> {
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle.light,
         title: const Text('Chat'),
+        actions: [
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
+              child: InkWell(
+                onTap: () {},
+                child: IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => UsersPage()),
+                      );
+                    },
+                    color: Colors.white,
+                    icon: Image.asset('assets/images/menu-icon.png')),
+              ),
+            ),
+          )
+        ],
       ),
       body: StreamBuilder<types.Room>(
         initialData: widget.room,

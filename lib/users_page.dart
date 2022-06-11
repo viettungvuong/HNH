@@ -82,7 +82,7 @@ class UsersPage extends StatelessWidget {
               margin: const EdgeInsets.only(
                 bottom: 200,
               ),
-              child: const Text('No users'),
+              child: const Text('Không có ai'),
             );
           }
 
