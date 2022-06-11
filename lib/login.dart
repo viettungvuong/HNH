@@ -144,6 +144,7 @@ class _loginState extends State<loginWindow> {
                 Container(
                   padding: EdgeInsets.only(top: 50),
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
                         alignment: Alignment.topLeft,
