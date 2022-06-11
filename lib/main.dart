@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hnh/baitap.dart';
 import 'package:hnh/chat.dart';
 import 'package:hnh/chat_page.dart';
 import 'package:hnh/diary.dart';
@@ -146,7 +147,12 @@ class mainWidget extends StatelessWidget {
                     width: 100,
                     height: 100.0,
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => baiTapPage()),
+                        );
+                      },
                       icon: Image.asset('assets/images/Icon_row204.png'),
                       iconSize: 60,
                     ),
